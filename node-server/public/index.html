@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Web App</title>
+  
+  <!-- DataTables -->
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+  <!-- FontAwsome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <!-- Plotly.js -->
+  <script src="https://cdn.plot.ly/plotly-2.31.1.min.js"></script>
+  <!-- Style -->
+  <link href="style.css" rel="stylesheet" />
+  <!-- Main JS -->
+  <script src="main.js"></script>
+
+</head>
+<body>
+  <div class="topnav">
+  <a class="active" href="#home"><b>PSI :: HIPA</b></a>
+  <a href="#news">News</a>
+  <a href="#contact">Contact</a>
+  <a href="#about" style="float: right;"><i class="fa fa-github"></i> Github</a>
+  </div>  
+  
+   <!-- Chart controls -->
+    <div class="flex-container">
+      <div>
+        <label for="xSelect" class="form-label">X-axis</label>
+        <select id="xSelect" class="form-select"></select>
+      </div>
+      
+      <div>
+        <label for="chartType" class="form-label">Type</label>
+        <select id="chartType" class="form-select">
+          <option value="markers">Scatter</option>
+          <option value="scatter">Line</option>
+          <option value="bar">Bar</option>
+        </select>
+      </div>
+     
+      <div>
+        <label for="ySelect" class="form-label">Y-axis</label>
+        <select id="ySelect" class="form-select" multiple></select>
+      </div>
+    </div>
+
+
+  <div id="plotlyChart" style="margin:14px; width: 95%;height: 600px;"></div>
+  <!--<table id="csvTable" class="display" style="width:100%"></table>-->
+  
+</body>
+</html>

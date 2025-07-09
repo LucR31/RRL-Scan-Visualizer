@@ -1,0 +1,85 @@
+:root{
+  --background-color: rgb(242, 242, 242);
+  --secondary-color: rgb(54, 67, 255);
+}
+
+body {
+  background-color: var(--background-color);
+  font-family: sans-serif;
+}
+
+.container {
+  max-width: 1000px;
+}
+
+label {
+  border: 1px solid #c4c4c4;
+  border-radius: 2px;
+  padding: 6px;
+  color: var(--secondary-color);
+  font-size: 15px;
+  background-color: white;
+}
+
+#plotlyChart {
+  border: 1px solid #a2a2a286;
+  border-radius: 2px;
+  background: rgb(255, 255, 255);
+  padding: 10px;
+}
+
+table.dataTable {
+  font-size: 0.9rem;
+}
+
+select {
+  border: 1px solid #8e8e8e;
+  border-radius: 2px;
+  background: #ffffff;
+  padding: 6px;
+  transition: 0.4s;
+  font-size: 15px;
+}
+
+select:hover,
+select:focus {
+  background: var(--secondary-color);
+}
+.flex-container {
+  display: flex;
+  align-items: stretch;
+  background-color: var(--background-color);
+}
+
+.flex-container > div {
+  background-color: var(--background-color);
+  color: rgb(0, 0, 0);
+  margin: 5px;
+  padding: 10px;
+  font-size: 12px;
+}
+
+/* TOP NAVIGATION CSS */
+.topnav {
+  overflow: hidden;
+  background-color: white;
+}
+
+.topnav a {
+  float: left;
+  color: #000000;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 17px;
+}
+
+.topnav a:hover {
+  color: var(--secondary-color);
+  text-decoration: underline 4px;
+  text-underline-offset: 7px;
+}
+
+.topnav a.active {
+  color: rgb(0, 0, 0);
+}
