@@ -16,20 +16,18 @@ export function populateDropdowns(keys) {
 }
 
 //
-
-export function drawPlot(data) {
+export function drawPlot(data, flag) {
   const xKey = document.getElementById('xSelect').value;
   const yOptions = Array.from(document.getElementById('ySelect').selectedOptions);
   const yKeys = yOptions.map(opt => opt.value);
-  const chartType = "markers";
 
   const traces = yKeys.map((yKey, i) => {
     const axisName = i === 0 ? 'y' : `y${i + 1}`;
     return {
-      x: data.map(row => row[xKey]),
-      y: data.map(row => parseFloat(row[yKey])),
-      type: chartType === 'markers' ? 'scatter' : chartType,
-      mode: chartType === 'scatter' ? 'lines+markers' : undefined,
+      x: data.map(row => (flag ? (row.scan === flag ? row[xKey] : null) : row[xKey])),
+      y: data.map(row => (flag ? (row.scan === flag ? parseFloat(row[yKey]) : null) : parseFloat(row[yKey]))),
+      type: 'lines+markers',
+      mode: 'lines',
       name: yKey,
       yaxis: axisName
     };
@@ -37,15 +35,16 @@ export function drawPlot(data) {
 
   // Build layout with dynamic y-axes
   const layout = {
-    title: {text:`${yKeys.join(', ')}`,
-            font: {
-                  family: 'sans-serif',
-                  size: 20,
-                  color:' #030303'
-                  },   
-            xref: 'paper',
-            x: 0.05,
-          },
+    title: {
+      text: `${yKeys.join(', ')}`,
+      font: {
+        family: 'sans-serif',
+        size: 20,
+        color: '#030303'
+      },
+      xref: 'paper',
+      x: 0.05,
+    },
     xaxis: { title: xKey },
     legend: { orientation: 'h' },
     responsive: true
@@ -73,6 +72,7 @@ export function drawPlot(data) {
 
   Plotly.newPlot('plotlyChart', traces, layout);
 }
+
 
 //
 
