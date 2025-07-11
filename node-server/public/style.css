@@ -1,12 +1,14 @@
 :root{
-  --background-color: rgb(242, 242, 242);
-  --secondary-color: rgb(54, 67, 255);
+  --background-color: rgb(245, 244, 244);
+  --secondary-color: rgb(135, 143, 253);
 }
 
 body {
   background-color: var(--background-color);
   font-family: sans-serif;
 }
+
+#plot { width: 900px; height: 600px; }
 
 .container {
   max-width: 1000px;

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Plot JSON Positions</title>
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+<style>
+  body { font-family: Arial, sans-serif; padding: 20px; }
+  #plot { width: 900px; height: 600px; }
+</style>
+</head>
+<body>
+
+<h2>Load JSON and Plot Positions</h2>
+<input type="file" id="jsonFileInput" accept=".json" />
+<div id="plot"></div>
+
+<script>
+document.getElementById('jsonFileInput').addEventListener('change', function(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    try {
+      const jsonData = JSON.parse(e.target.result);
+      if (!jsonData.HIPAdata.profile[0].positions) {
+        alert("JSON does not contain 'positions' field.");
+        return;
+      }
+
+      // Trim and split multiline string
+      const raw = jsonData.HIPAdata.profile[0].positions.trim();
+      const lines = raw.split(/\r?\n/);
+
+      const x = [], y1 = [], y2 = [], y3 = [];
+
+      for (const line of lines) {
+        const parts = line.trim().split(/\s+/).map(Number);
+        if (parts.length >= 4) {
+          x.push(parts[0]);
+          y1.push(parts[1]);
+          y2.push(parts[2]);
+          y3.push(parts[3]);
+        }
+      }
+
+      // Downsample large data for performance
+      const sampleRate = 10; // Adjust this as needed
+      const xSampled = [], y1Sampled = [], y2Sampled = [], y3Sampled = [];
+      for (let i = 0; i < x.length; i += sampleRate) {
+        xSampled.push(x[i]);
+        y1Sampled.push(y1[i]);
+        y2Sampled.push(y2[i]);
+        y3Sampled.push(y3[i]);
+      }
+
+      const traces = [
+        { x: xSampled, y: y1Sampled, mode: 'lines', name: 'Y1', type: 'scattergl' },
+        { x: xSampled, y: y2Sampled, mode: 'lines', name: 'Y2', type: 'scattergl' },
+        { x: xSampled, y: y3Sampled, mode: 'lines', name: 'Y3', type: 'scattergl' },
+      ];
+
+      Plotly.newPlot('plot', traces, {
+        title: 'Plot from JSON String positions',
+        xaxis: { title: 'X' },
+        yaxis: { title: 'Values' },
+        margin: { t: 50, r: 30, b: 50, l: 60 },
+      });
+    } catch (err) {
+      alert("Error parsing JSON or plotting: " + err.message);
+    }
+  };
+  reader.readAsText(file);
+});
+</script>
+
+</body>
+</html>
+
+
