@@ -1,5 +1,5 @@
 import { populateDropdowns, drawPlot, drawPlot_2 } from './functions.js';
-let data = [];
+
 
 const folderDropdown = document.getElementById('date');
 const fileDropdown = document.getElementById('scan');
@@ -48,6 +48,31 @@ folderDropdown.addEventListener('change', () => {
                 document.getElementById('ySelect').addEventListener('change', drawPlot);
                 });
           }
+          
         });
       }
     })
+
+//
+fileDropdown.addEventListener('change', () => {
+  const selectedFolder = folderDropdown.value;
+  const selectedFile = fileDropdown.value;
+
+  if (selectedFile) {
+    fetch(`/data/${selectedFolder}/${selectedFile}`)
+      .then(res => res.json())
+      .then(jsonData => {
+        const positions = jsonData?.HIPAdata?.profile?.[0]?.positions;
+        if (!positions) {
+              alert("JSON does not contain 'HIPAdata.profile[0].positions'");
+              return;
+        }
+        //plot positions
+        drawPlot_2(positions)
+        
+      });
+    }
+
+
+});
+

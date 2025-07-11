@@ -76,23 +76,11 @@ export function drawPlot(data) {
 
 //
 
-export function drawPlot_2(event) {
-  const file = event.target.files[0];
-  if (!file) return;
-
-  const reader = new FileReader();
-  reader.onload = function(e) {
-    try {
-      const jsonData = JSON.parse(e.target.result);
-      if (!jsonData.HIPAdata.profile[0].positions) {
-        alert("JSON does not contain 'positions' field.");
-        return;
-      }
+export function drawPlot_2(positions) {
 
       // Trim and split multiline string
-      const raw = jsonData.HIPAdata.profile[0].positions.trim();
+      const raw = positions.trim();
       const lines = raw.split(/\r?\n/);
-      console.log(raw)
       const x = [], y1 = [], y2 = [], y3 = [];
 
       for (const line of lines) {
@@ -126,10 +114,5 @@ export function drawPlot_2(event) {
         xaxis: { title: 'X' },
         yaxis: { title: 'Values' },
         margin: { t: 50, r: 30, b: 50, l: 60 },
-      });
-    } catch (err) {
-      alert("Error parsing JSON or plotting: " + err.message);
-    }
+      });    
   };
-  reader.readAsText(file);
-};
