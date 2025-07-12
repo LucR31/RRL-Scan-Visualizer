@@ -24,6 +24,7 @@
   <div class="topnav">
     <a class="active" href="#home"><b>PSI :: HIPA</b></a>
     <a href="#contact">About</a>
+    <button onclick="runPython()">Run</button>
     <a href="https://github.com/LucR31/webapp" style="float: right;">
       <i class="fa fa-github"></i> Github</a>
   </div>  
@@ -46,12 +47,38 @@
       </div>
       <div>
         <label for="ySelect" class="form-label">Y-axis</label>
-        <select id="ySelect" class="form-select"></select>
+        <select id="ySelect" class="form-select" multiple></select>
+      </div>
+      <div>
+        <label for="finger" class="form-label">Finger</label>
+        <select id="finger" class="form-select">
+          <option>L1</option>
+          <option>L2</option>
+          <option>L3</option>
+        </select>
       </div>
     </div>
 
+  <div id="output"></div>  
   <div id="plotlyChart" style="margin:14px; width: 95%;height: 600px;"></div>
   <div id="plot" style="margin:14px; width: 95%;height: 600px;"></div>
+
+  <script>
+    function runPython() {
+      fetch('/run-script')
+        .then(res => res.json())
+        .then(data => {
+          const outputDiv = document.getElementById('output');
+          outputDiv.textContent = data.output;
+          outputDiv.style.display = 'block';
+
+          // Hide after 5 seconds
+          setTimeout(() => {
+            outputDiv.style.display = 'none';
+          }, 5000);
+        });
+    }
+  </script>
    
 </body>
 </html>

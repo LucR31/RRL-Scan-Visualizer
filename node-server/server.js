@@ -1,6 +1,7 @@
 const express = require('express');
 const fs = require('fs');
 const path = require('path');
+const { spawn } = require('child_process');
 
 const app = express();
 const PORT = 3000;
@@ -31,6 +32,20 @@ app.get('/files/:folder', (req, res) => {
     const csvFile = files.find(file => file.endsWith('.csv')) || null;
     res.json({ jsonFiles, csvFile });
   });
+});
+
+
+app.get('/run-script', (req, res) => {
+    const python = spawn('python3', ['script.py']);
+    let output = '';
+
+    python.stdout.on('data', (data) => {
+        output += data.toString();
+    });
+
+    python.on('close', () => {
+        res.send({ output });
+    });
 });
 
 app.listen(PORT, () => {

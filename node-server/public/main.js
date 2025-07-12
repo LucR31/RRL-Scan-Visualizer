@@ -1,7 +1,8 @@
-import { populateDropdowns, drawPlot, drawPlot_2 } from './functions.js';
+import { populateDropdowns, drawPlot, getJsonTraces } from './functions.js';
 
 const folderDropdown = document.getElementById('date');
 const fileDropdown = document.getElementById('scan');
+const finger = document.getElementById('finger');
 const xSelect = document.getElementById('xSelect');
 const ySelect = document.getElementById('ySelect');
 
@@ -54,8 +55,6 @@ folderDropdown.addEventListener('change', () => {
               });
 
               populateDropdowns(headers);
-
-              // Plot initially with no flag (all data)
               drawPlot(csvData, currentFlag);
 
               // Update listeners for dropdowns to replot with currentFlag
@@ -67,37 +66,27 @@ folderDropdown.addEventListener('change', () => {
   }
 });
 
-// When JSON file is selected, update currentFlag and plot positions & CSV
 fileDropdown.addEventListener('change', () => {
   const selectedFolder = folderDropdown.value;
   const selectedFile = fileDropdown.value;
+  const selectedFinger = finger.value;
 
   if (selectedFile && selectedFile !== 'None') {
-    // Set flag as filename without extension
-    currentFlag = selectedFile.replace(/\.[^/.]+$/, "");
+    const flag = selectedFile.replace(/\.[^/.]+$/, "");
 
     fetch(`/data/${selectedFolder}/${selectedFile}`)
       .then(res => res.json())
       .then(jsonData => {
-        const positions = jsonData?.HIPAdata?.profile?.[0]?.positions;
-        if (!positions) {
-          alert("JSON does not contain 'HIPAdata.profile[0].positions'");
-          return;
-        }
-        // Plot JSON positions
-        drawPlot_2(positions);
+        const rawPositions_i = jsonData?.HIPAdata?.profile?.[0]?.positions || '';
+        const rawPositions_o = jsonData?.HIPAdata?.profile?.[1]?.positions || '';
+        const jsonTraces = getJsonTraces(rawPositions_i, rawPositions_o, selectedFinger);
+        drawPlot(csvData, flag, jsonTraces);
 
-        // Re-plot CSV data filtered by currentFlag
-        if (csvData.length > 0) {
-          drawPlot(csvData, currentFlag);
-        }
+        finger.addEventListener('change', () => {
+          const selectedFinger = finger.value;
+           drawPlot(csvData, flag, getJsonTraces(rawPositions_i, rawPositions_o, selectedFinger));
+          }
+          );
       });
-  } else {
-    // No JSON file selected, reset flag and plot all CSV data
-    currentFlag = null;
-    drawPlot_2([]); // optionally clear the second plot or do nothing
-    if (csvData.length > 0) {
-      drawPlot(csvData, currentFlag);
-    }
   }
 });
