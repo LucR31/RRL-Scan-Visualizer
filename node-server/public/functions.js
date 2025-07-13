@@ -29,7 +29,7 @@ export function drawPlot(data, flag, extraTraces = []) {
       type: 'lines+markers',
       mode: 'lines',
       name: yKey,
-      yaxis:axisName,
+      yaxis: axisName,
       xaxis:'x'
     };
   });
@@ -43,34 +43,33 @@ export function drawPlot(data, flag, extraTraces = []) {
       font: { family: 'sans-serif', size: 20, color: '#030303' },
       xref: 'paper', x: 0.05,
     },
-    grid: {
-    rows: 2,
-    columns: 1,
-    pattern: 'independent',
-    roworder: 'top to bottom'},
+   grid: {
+   rows: 2,
+   columns: 1,
+   pattern: 'independent',
+   },
+    
     legend: { orientation: 'h' },
     responsive: true,
     margin: { t: 50, r: 30, b: 50, l: 60 },
-    xaxis: { title: xKey || 'X', domain: [0,1], anchor: 'x'},
+    xaxis: { title: xKey || 'X', domain: [0,1], anchor: 'y'},
     yaxis: {
       title: yKeys[0] || 'Y',
       titlefont: { color: 'blue' },
-      tickfont: { color: 'blue' , domain: [0.5,1], anchor: 'y'},
+      tickfont: { color: 'blue' , domain: [0.65,1], anchor: 'x'},
     },
-    xaxis2: { title: 'Inward',domain: [0,0.5], anchor: 'x2' },
-    yaxis2: { title: 'Values',domain: [0,0.5], anchor: 'y2'},
-    xaxis3: { title: 'Outward',domain: [0.5,1], anchor: 'x3' },
-    yaxis3: {domain: [0,0.5], anchor: 'y3'}
+    xaxis2: { title: 'Inward',domain: [0,0.49], anchor: 'y2' },
+    yaxis2: { title: 'Values',domain: [0,0.45], anchor: 'x2'},
+    xaxis3: { title: 'Outward',domain: [0.5,1], anchor: 'y3' },
+    yaxis3: {domain: [0,0.45], anchor: 'x3'}
   };
 
-  for (let i = 3; i < yKeys.length; i++) {
+  for (let i = 1; i < yKeys.length; i++) {
     layout[`yaxis${i + 1}`] = {
       title: yKeys[i],
       overlaying: 'y',
       side: 'right',
       position: 1 + 0.05 * (i - 1),
-      titlefont: { color: 'green' },
-      tickfont: { color: 'green' },
     };
   }
   Plotly.newPlot('plotlyChart', allTraces, layout);

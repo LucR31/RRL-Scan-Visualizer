@@ -34,7 +34,6 @@ app.get('/files/:folder', (req, res) => {
   });
 });
 
-
 app.get('/run-script', (req, res) => {
     const python = spawn('python3', ['script.py']);
     let output = '';
