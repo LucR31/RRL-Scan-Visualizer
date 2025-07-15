@@ -89,4 +89,6 @@ def fill_scan_name_col(df:pd.DataFrame,
 
 df = fill_scan_name_col(df,['RRL1-0105Y25'],'RRL1A:IST:2')
 print('[INFO]: scan column created')
+#try:
 #df.to_csv('tendis_20250707_103559.csv', index=False) 
+#except:
