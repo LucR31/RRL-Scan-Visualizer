@@ -2,4 +2,5 @@
 *.txt
 *.DS_Store
 *.csv
-*.json
+data/
+node_modules/
