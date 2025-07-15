@@ -1,4 +1,4 @@
-:root{
+:root {
   --background-color: rgb(245, 244, 244);
   --secondary-color: rgb(135, 143, 253);
 }
@@ -8,7 +8,10 @@ body {
   font-family: sans-serif;
 }
 
-#plot { width: 900px; height: 600px; }
+#plot {
+  width: 900px;
+  height: 600px;
+}
 
 .container {
   max-width: 1000px;
@@ -68,7 +71,7 @@ select:focus {
   border: 1px solid #a2a2a286;
 }
 
-.topnav button{
+.topnav button {
   float: left;
   text-align: center;
   padding: 14px 16px;
@@ -77,7 +80,7 @@ select:focus {
   border: none;
   background: none;
 }
-.topnav button:hover{
+.topnav button:hover {
   color: var(--secondary-color);
   text-decoration: underline 4px;
   text-underline-offset: 7px;
@@ -103,10 +106,10 @@ select:focus {
 }
 
 /*Output from scritp*/
-#output{
-  max-height: 300px;        /* or any height you like */
-  overflow-y: auto;         /* enables vertical scrolling */
-  white-space: pre-wrap;    /* preserves line breaks and wraps text */
+#output {
+  max-height: 300px; /* or any height you like */
+  overflow-y: auto; /* enables vertical scrolling */
+  white-space: pre-wrap; /* preserves line breaks and wraps text */
   margin: 15px;
   border: 1px solid #c4c4c4;
   border-radius: 2px;

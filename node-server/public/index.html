@@ -1,35 +1,42 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <title>Web App</title>
-  
-  <!-- DataTables -->
-  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
-  <!-- FontAwsome -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-  <!-- Plotly.js -->
-  <script src="https://cdn.plot.ly/plotly-2.31.1.min.js"></script>
-  <!-- Style -->
-  <link href="style.css" rel="stylesheet" />
-  <!-- Main JS -->
-  <script type="module" src="main.js"></script>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Web App</title>
 
-</head>
-<body>
+    <!-- DataTables -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css"
+    />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+    <!-- FontAwsome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+    <!-- Plotly.js -->
+    <script src="https://cdn.plot.ly/plotly-2.31.1.min.js"></script>
+    <!-- Style -->
+    <link href="style.css" rel="stylesheet" />
+    <!-- Main JS -->
+    <script type="module" src="main.js"></script>
+  </head>
+  <body>
+    <!-- Top navigation menu-->
+    <div class="topnav">
+      <a class="active" href="#home"><b>PSI :: HIPA</b></a>
+      <a href="#contact">About</a>
+      <button onclick="runPython()">
+        <i class="fa fa-refresh" aria-hidden="true"></i> Run
+      </button>
+      <a href="https://github.com/LucR31/webapp" style="float: right">
+        <i class="fa fa-github"></i> Github</a
+      >
+    </div>
 
-  <!-- Top navigation menu-->
-  <div class="topnav">
-    <a class="active" href="#home"><b>PSI :: HIPA</b></a>
-    <a href="#contact">About</a>
-    <button onclick="runPython()"><i class="fa fa-refresh" aria-hidden="true"></i> Run</button>
-    <a href="https://github.com/LucR31/webapp" style="float: right;">
-      <i class="fa fa-github"></i> Github</a>
-  </div>  
-  
-   <!-- Chart controls -->
+    <!-- Chart controls -->
     <div class="flex-container">
       <div>
         <label for="date" class="form-label">Date</label>
@@ -59,26 +66,25 @@
       </div>
     </div>
 
-  <div id="output"></div>  
-  <div id="plotlyChart" style="margin:14px; width: 95%;height: 600px;"></div>
-  <div id="plot" style="margin:14px; width: 95%;height: 600px;"></div>
+    <div id="output"></div>
+    <div id="plotlyChart" style="margin: 14px; width: 95%; height: 600px"></div>
+    <div id="plot" style="margin: 14px; width: 95%; height: 600px"></div>
 
-  <script>
-    function runPython() {
-      fetch('/run-script')
-        .then(res => res.json())
-        .then(data => {
-          const outputDiv = document.getElementById('output');
-          outputDiv.innerHTML = data.output.toString().replace(/\n/g, '<br>');
-          outputDiv.style.display = 'block';
-          
-          // Hide after 5 seconds
-          setTimeout(() => {
-            outputDiv.style.display = 'none';
-          }, 5000);
-        });
-    }
-  </script>
-   
-</body>
+    <script>
+      function runPython() {
+        fetch("/run-script")
+          .then((res) => res.json())
+          .then((data) => {
+            const outputDiv = document.getElementById("output");
+            outputDiv.innerHTML = data.output.toString().replace(/\n/g, "<br>");
+            outputDiv.style.display = "block";
+
+            // Hide after 5 seconds
+            setTimeout(() => {
+              outputDiv.style.display = "none";
+            }, 5000);
+          });
+      }
+    </script>
+  </body>
 </html>
