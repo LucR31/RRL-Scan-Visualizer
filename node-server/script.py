@@ -4,9 +4,8 @@ import os
 import pandas as pd
 
 folder_name = "07-07-2025/"
-dir = "./data/"
-txt_file_name = [f[:-4] for f in os.listdir(dir) if f.endswith(".txt")][0]
-
+dir = "./data/"+folder_name
+txt_file_name = next((f[:-4] for f in os.listdir(dir) if f.endswith(".txt")), None)
 
 def write_json(file_name):
     # creates .json file from xml

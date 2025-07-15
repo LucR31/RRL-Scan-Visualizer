@@ -7,6 +7,8 @@ webapp-main/
 ├── node-server/
 │   ├── server.js             # Node.js server
 │   ├── script.py             # Helper script
+│   ├── package.json             
+│   ├── package-lock.json            
 │   └── public/
 │       ├── index.html        # Main frontend page
 │       ├── main.js           # Frontend JS logic
