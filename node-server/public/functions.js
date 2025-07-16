@@ -19,33 +19,31 @@ export function populateDropdowns(keys) {
 export function drawPlot(data, flag, extraTraces = []) {
   const xKey = document.getElementById("xSelect").value;
   const yOptions = Array.from(
-    document.getElementById("ySelect").selectedOptions,
+    document.getElementById("ySelect").selectedOptions
   );
   const yKeys = yOptions.map((opt) => opt.value);
 
+  // Prepare main traces (top plot)
   const traces = yKeys.map((yKey, i) => {
     const axisName = i === 0 ? "y" : `y${i + 1}`;
     return {
       x: data.map((row) =>
-        flag ? (row.scan === flag ? row[xKey] : null) : row[xKey],
+        flag ? (row.scan === flag ? row[xKey] : null) : row[xKey]
       ),
       y: data.map((row) =>
         flag
           ? row.scan === flag
             ? parseFloat(row[yKey])
             : null
-          : parseFloat(row[yKey]),
+          : parseFloat(row[yKey])
       ),
-      type: "lines+markers",
+      type: "scattergl",
       mode: "lines",
       name: yKey,
-      yaxis: axisName,
       xaxis: "x",
+      yaxis: axisName,
     };
   });
-
-  // Combine CSV and JSON traces
-  const allTraces = traces.concat(extraTraces);
 
   const layout = {
     title: {
@@ -55,36 +53,75 @@ export function drawPlot(data, flag, extraTraces = []) {
       x: 0.05,
     },
     grid: {
-      rows: 2,
+      rows: extraTraces.length ? 2 : 1,
       columns: 1,
       pattern: "independent",
+      roworder: "top to bottom",
     },
-
     legend: { orientation: "h" },
-    responsive: true,
-    margin: { t: 50, r: 30, b: 50, l: 60 },
-    xaxis: { title: xKey || "X", domain: [0, 1], anchor: "y" },
+    margin: { t: 50, r: 50, b: 50, l: 60 },
+    xaxis: {
+      title: xKey || "X",
+      domain: [0, 1],
+      anchor: "y",
+    },
     yaxis: {
       title: yKeys[0] || "Y",
-      titlefont: { color: "blue" },
-      tickfont: { color: "blue", domain: [0.65, 1], anchor: "x" },
+      domain: [extraTraces.length ? 0.4 : 0, 1],
+      anchor: "x",
     },
-    xaxis2: { title: "Inward", domain: [0, 0.49], anchor: "y2" },
-    yaxis2: { title: "Values", domain: [0, 0.45], anchor: "x2" },
-    xaxis3: { title: "Outward", domain: [0.5, 1], anchor: "y3" },
-    yaxis3: { domain: [0, 0.45], anchor: "x3" },
   };
 
+  // Extra Y axes on top (overlaid)
   for (let i = 1; i < yKeys.length; i++) {
     layout[`yaxis${i + 1}`] = {
       title: yKeys[i],
       overlaying: "y",
       side: "right",
-      position: 1 + 0.05 * (i - 1),
+      position: 1 - i * 0.05,
+      domain: [extraTraces.length ? 0.4 : 0, 1],
+      anchor: "x",
     };
   }
-  Plotly.newPlot("plotlyChart", allTraces, layout);
+
+  // Add bottom plots if extra traces exist
+  const topYCount = yKeys.length;
+  const bottomAxisStart = topYCount + 1;
+
+  if (extraTraces.length > 0) {
+    layout[`xaxis${bottomAxisStart}`] = {
+      title: "Inward",
+      domain: [0, 0.49],
+      anchor: `y${bottomAxisStart}`,
+    };
+    layout[`yaxis${bottomAxisStart}`] = {
+      domain: [0, 0.35],
+      anchor: `x${bottomAxisStart}`,
+      title: "Values",
+    };
+
+    layout[`xaxis${bottomAxisStart + 1}`] = {
+      title: "Outward",
+      domain: [0.5, 1],
+      anchor: `y${bottomAxisStart + 1}`,
+    };
+    layout[`yaxis${bottomAxisStart + 1}`] = {
+      domain: [0, 0.35],
+      anchor: `x${bottomAxisStart + 1}`,
+    };
+
+    // Update extraTraces to use the correct axis names
+    extraTraces[0].xaxis = `x${bottomAxisStart}`;
+    extraTraces[0].yaxis = `y${bottomAxisStart}`;
+    extraTraces[1].xaxis = `x${bottomAxisStart + 1}`;
+    extraTraces[1].yaxis = `y${bottomAxisStart + 1}`;
+  }
+
+  Plotly.newPlot("plotlyChart", [...traces, ...extraTraces], layout);
 }
+
+
+
 
 //
 export function getJsonTraces(
@@ -137,8 +174,6 @@ export function getJsonTraces(
       mode: "lines",
       name: "JSON Y1",
       type: "scattergl",
-      xaxis: "x2",
-      yaxis: "y2",
     },
     {
       x: x2Sampled,
@@ -146,8 +181,6 @@ export function getJsonTraces(
       mode: "lines",
       name: "JSON Y1-REVERSE",
       type: "scattergl",
-      xaxis: "x3",
-      yaxis: "y3",
     },
   ];
 }
