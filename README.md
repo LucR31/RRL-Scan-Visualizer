@@ -25,11 +25,6 @@ webapp-main/
 
 ## ⚙️ Getting Started
 
-### Prerequisites
-
-- [Node.js](https://nodejs.org/)
-- [Python 3](https://www.python.org/)
-
 ### 1. Start Node.js Server
 
 ```bash
@@ -41,6 +36,12 @@ docker build -t web-app .
 docker run -p 3000:3000 web-app
 ```
 
+### 2. Add Data
 
+Create a folder called data and add subfolders with date names containing the corresponding experiment data form that day.
 
+```bash
+cd node-server
+mkdir data
+```
 
