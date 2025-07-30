@@ -34,8 +34,11 @@ webapp-main/
 
 ```bash
 cd node-server
-npm install  
-node server.js
+docker build -t web-app .
+```
+
+```bash
+docker run -p 3000:3000 web-app
 ```
 
 
