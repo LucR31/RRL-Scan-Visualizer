@@ -8,14 +8,14 @@ webapp-main/
 │   ├── server.js             # Node.js server
 │   ├── script.py             # Helper script
 │   ├── package.json             
-│   ├── package-lock.json            
+│   ├── package-lock.json
+│   ├── Dockerfile
+│   ├── .dockerignore       
 │   └── public/
 │       ├── index.html        # Main frontend page
 │       ├── main.js           # Frontend JS logic
 │       ├── functions.js      # Extra frontend JS
 │       └── style.css         # Styles
-├── python-ml-api/
-│   └── ml-api.py             # Python ML API
 ├── .gitignore
 ├── LICENSE
 └── README.md
