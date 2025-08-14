@@ -169,6 +169,8 @@ export function getJsonTraces(
 
 export function drawSeparatePlots(mainTraces, extraTraces = []) {
   const container = document.getElementById("multiPlotContainer");
+  const yname = document.getElementById("ySelect").selectedOptions[0].value;
+  const fingerName = document.getElementById("finger").value;
   container.innerHTML = ""; // Clear old plots
 
   // Two-column grid layout
@@ -188,7 +190,7 @@ export function drawSeparatePlots(mainTraces, extraTraces = []) {
 
     const traceMain = {
       ...mainTraces[i],
-      name: `Main ${i + 1}`,
+      name: `${yname}`,
       xaxis: "x",
       yaxis: "y", 
     };
@@ -196,7 +198,7 @@ export function drawSeparatePlots(mainTraces, extraTraces = []) {
     const traceExtra = extraTraces[i]
       ? {
           ...extraTraces[i],
-          name: `Extra ${i + 1}`,
+          name: `${fingerName} signal`,
           xaxis: "x2",
           yaxis: "y2", 
         }
@@ -206,8 +208,9 @@ export function drawSeparatePlots(mainTraces, extraTraces = []) {
       title: `Part ${i + 1}`,
       margin: { t: 40, r: 30, b: 40, l: 50 },
       legend: { orientation: "h" },
-      xaxis: { title: "Main X", anchor: "y"},
-      yaxis: { title: "Main Y", side: "left",anchor: "x",},
+      xaxis: { title: "ms", anchor: "y"},
+      yaxis: { title: `${yname}`, 
+        side: "left",anchor: "x",},
     };
     if (traceExtra) {
       layout.xaxis2 = {
