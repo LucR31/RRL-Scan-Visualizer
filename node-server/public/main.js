@@ -1,4 +1,4 @@
-import { populateDropdowns, drawPlot, getJsonTraces } from "./functions.js";
+import { populateDropdowns, drawPlot, getJsonTraces, getmainTraces, drawSeparatePlots } from "./functions.js";
 
 const folderDropdown = document.getElementById("date");
 const fileDropdown = document.getElementById("scan");
@@ -55,14 +55,15 @@ folderDropdown.addEventListener("change", () => {
               });
 
               populateDropdowns(headers);
-              drawPlot(csvData, currentFlag);
+              drawSeparatePlots(getmainTraces(csvData,currentFlag));
+
 
               // Update listeners for dropdowns to replot with currentFlag
               xSelect.addEventListener("change", () =>
-                drawPlot(csvData, currentFlag),
+                drawSeparatePlots(getmainTraces(csvData,currentFlag))
               );
               ySelect.addEventListener("change", () =>
-                drawPlot(csvData, currentFlag),
+                drawSeparatePlots(getmainTraces(csvData,currentFlag)),
               );
             });
         }
@@ -90,15 +91,12 @@ fileDropdown.addEventListener("change", () => {
           rawPositions_o,
           selectedFinger,
         );
-        drawPlot(csvData, flag, jsonTraces);
-
+        
+        drawSeparatePlots(getmainTraces(csvData,flag),jsonTraces);
         finger.addEventListener("change", () => {
           const selectedFinger = finger.value;
-          drawPlot(
-            csvData,
-            flag,
-            getJsonTraces(rawPositions_i, rawPositions_o, selectedFinger),
-          );
+          drawSeparatePlots(getmainTraces(csvData,flag),
+                            getJsonTraces(rawPositions_i, rawPositions_o, selectedFinger));
         });
       });
   }

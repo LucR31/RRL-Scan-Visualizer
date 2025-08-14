@@ -107,6 +107,7 @@ select:focus {
 
 /*Output from scritp*/
 #output {
+  display: none;
   max-height: 300px; /* or any height you like */
   overflow-y: auto; /* enables vertical scrolling */
   white-space: pre-wrap; /* preserves line breaks and wraps text */
@@ -117,4 +118,9 @@ select:focus {
   font-size: 15px;
   color: rgb(0, 255, 0);
   background-color: rgb(0, 0, 0);
+}
+
+#multiPlotContainer{
+  border: 1px solid #c4c4c4;
+  border-radius: 2px;
 }

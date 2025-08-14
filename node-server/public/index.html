@@ -54,7 +54,7 @@
       </div>
       <div>
         <label for="ySelect" class="form-label">Y-axis</label>
-        <select id="ySelect" class="form-select" multiple></select>
+        <select id="ySelect" class="form-select"></select>
       </div>
       <div>
         <label for="finger" class="form-label">Finger</label>
@@ -67,8 +67,11 @@
     </div>
 
     <div id="output"></div>
-    <div id="plotlyChart" style="margin: 14px; width: 95%; height: 600px"></div>
-    <div id="plot" style="margin: 14px; width: 95%; height: 600px"></div>
+    
+    <!--<div id="plotlyChart" style="margin: 14px; width: 95%; height: 600px"></div>
+    <div id="plot" style="margin: 14px; width: 95%; height: 600px"></div>-->
+    <div id="multiPlotContainer"></div>
+
 
     <script>
       function runPython() {
