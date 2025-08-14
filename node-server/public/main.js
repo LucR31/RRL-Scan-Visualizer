@@ -1,4 +1,4 @@
-import { populateDropdowns, drawPlot, getJsonTraces, getmainTraces, drawSeparatePlots } from "./functions.js";
+import { populateDropdowns, getJsonTraces, getmainTraces, drawSeparatePlots } from "./functions.js";
 
 const folderDropdown = document.getElementById("date");
 const fileDropdown = document.getElementById("scan");

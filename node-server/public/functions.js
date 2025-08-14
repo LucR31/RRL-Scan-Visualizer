@@ -56,66 +56,6 @@ export function getmainTraces(data, flag) {
   return allTraces;
 }
 
-
-export function drawPlot(data, flag, extraTraces = []) {
-  const xKey = document.getElementById("xSelect").value;
-  const yOptions = Array.from(document.getElementById("ySelect").selectedOptions);
-  const yKeys = yOptions.map((opt) => opt.value);
-
-  const xArr = data.map((row) => row[xKey]);
-  const mainTraces = [];
-
-  // Slice each Y trace into 8 parts
-  yKeys.forEach((yKey) => {
-    const yArr = data.map((row) =>
-      flag ? (row.scan === flag ? parseFloat(row[yKey]) : null) : parseFloat(row[yKey])
-    );
-    mainTraces.push(...splitIntoN(xArr, yArr, yKey, 8));
-  });
-
-  const allTraces = [...mainTraces, ...extraTraces]; // extras already sliced
-  const cols = 2;
-  const rows = 4;
-
-  const layout = {
-    title: `${yKeys.join(", ")} & Extra Traces`,
-    grid: {
-      rows:4,
-      columns: 2,
-      pattern: "independent",
-    },
-    margin: { t: 50, r: 30, b: 40, l: 50 },
-    legend: { orientation: "h" },
-  };
-
-  allTraces.forEach((trace, i) => {
-    const xa = `xaxis${i + 1}`;
-    const ya = `yaxis${i + 1}`;
-    const col = i % cols;
-    const row = Math.floor(i / cols);
-    const xStart = col / cols;
-    const xEnd = (col + 1) / cols - 0.1;
-    const yStart = 1 - (row + 1) / rows;
-    const yEnd = 1 - row / rows - 0.1;
-
-    layout[xa] = {
-      anchor: ya,
-      domain: [xStart, xEnd],
-      title: trace.name,
-    };
-    layout[ya] = {
-      anchor: xa,
-      domain: [yStart, yEnd],
-    };
-
-    trace.xaxis = `x${i + 1}`;
-    trace.yaxis = `y${i + 1}`;
-  });
-
-  Plotly.newPlot("plotlyChart", allTraces, layout);
-}
-
-
 //
 export function getJsonTraces(
   positions_i,
@@ -179,6 +119,8 @@ export function drawSeparatePlots(mainTraces, extraTraces = []) {
   container.style.gap = "10px";
 
   const total = mainTraces.length;
+  const half = total / 2;
+
 
   for (let i = 0; i < total; i++) {
     // Create a div for each individual plot
@@ -186,6 +128,14 @@ export function drawSeparatePlots(mainTraces, extraTraces = []) {
     plotDiv.id = `plot-${i}`;
     plotDiv.style.width = "100%";
     plotDiv.style.height = "300px";
+
+    const row = (i % half) + 1; // rows: 1 to 4
+    const col = i < half ? 1 : 2; // first half in column 1, second half in column 2
+    plotDiv.style.gridRow = row;
+    plotDiv.style.gridColumn = col;
+
+    let direction = (i < 4) ? 'inward' : 'outward';
+
     container.appendChild(plotDiv);
 
     const traceMain = {
@@ -205,8 +155,8 @@ export function drawSeparatePlots(mainTraces, extraTraces = []) {
       : null;
 
     const layout = {
-      title: `Part ${i + 1}`,
-      margin: { t: 40, r: 30, b: 40, l: 50 },
+      title: `Slice ${i + 1} (${direction})`,
+      margin: { t: 100, r: 70, b: 60, l: 70 },
       legend: { orientation: "h" },
       xaxis: { title: "ms", anchor: "y"},
       yaxis: { title: `${yname}`, 
@@ -214,13 +164,14 @@ export function drawSeparatePlots(mainTraces, extraTraces = []) {
     };
     if (traceExtra) {
       layout.xaxis2 = {
-        title: "mm",
+        title: {text:"mm", standoff:1},
         overlaying: "x",
         side: "top",
         anchor: "y2",
+        position: 1.05, 
       };
       layout.yaxis2 = {
-        title: "signal(uA)",
+        title: "signal (uA)",
         overlaying: "y",
         side: "right",
         anchor: "x2",

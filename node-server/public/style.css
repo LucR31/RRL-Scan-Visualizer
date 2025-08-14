@@ -123,4 +123,6 @@ select:focus {
 #multiPlotContainer{
   border: 1px solid #c4c4c4;
   border-radius: 2px;
+  background-color: #e3e3e3;
+  padding: 10px;
 }
