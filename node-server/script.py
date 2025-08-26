@@ -17,7 +17,7 @@ if len(sys.argv) < 2:
     sys.exit(1)
 
 folder_name = sys.argv[1]+'/'
-logging.info('Formatting '+ folder_name)
+logging.info(' Formatting '+ folder_name)
 dir = "./data/"+folder_name
 txt_file_name = next((f[:-4] for f in os.listdir(dir) if f.endswith(".txt")), None)
 
