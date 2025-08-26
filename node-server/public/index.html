@@ -72,14 +72,15 @@
 
     <script>
       function runPython() {
-        fetch("/run-script")
+        const folderName = document.getElementById("date").value;
+        fetch(`/run-script?folder=${encodeURIComponent(folderName)}`)
           .then((res) => res.json())
           .then((data) => {
             const outputDiv = document.getElementById("output");
             outputDiv.innerHTML = data.output.toString().replace(/\n/g, "<br>");
             outputDiv.style.display = "block";
 
-            // Hide after 5 seconds
+            // Hide after 10 seconds
             setTimeout(() => {
               outputDiv.style.display = "none";
             }, 10000);

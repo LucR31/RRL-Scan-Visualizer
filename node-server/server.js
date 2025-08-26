@@ -35,14 +35,27 @@ app.get("/files/:folder", (req, res) => {
 });
 
 app.get("/run-script", (req, res) => {
-  const python = spawn("python3", ["script.py"]);
+  const folderName = req.query.folder;
+
+  if (!folderName) {
+    return res.status(400).send({ error: "Missing folder parameter" });
+  }
+  const python = spawn("python3", ["script.py",folderName]);
   let output = "";
+  let errorOutput = "";
 
   python.stdout.on("data", (data) => {
     output += data.toString();
   });
+  python.stderr.on("data", (data) => {
+    errorOutput += data.toString();
+  });
 
-  python.on("close", () => {
+  python.on("close", (code) => {
+    if (code !== 0) {
+      console.error("Python error:", errorOutput); // 👈 log real error
+      return res.status(500).send({ error: errorOutput || "Python script failed" });
+    }
     res.send({ output });
   });
 });

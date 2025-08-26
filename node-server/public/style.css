@@ -107,7 +107,6 @@ select:focus {
 
 /*Output from scritp*/
 #output {
-  display: none;
   max-height: 300px; /* or any height you like */
   overflow-y: auto; /* enables vertical scrolling */
   white-space: pre-wrap; /* preserves line breaks and wraps text */

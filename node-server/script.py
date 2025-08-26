@@ -1,9 +1,23 @@
 import json
+import logging
 import xmltodict
 import os
 import pandas as pd
+import sys
 
-folder_name = "07-07-2025/"
+# Configure logging
+logging.basicConfig(
+    level=logging.INFO,  # show INFO and above
+    format="%(asctime)s - %(levelname)s - %(message)s",
+    stream=sys.stdout
+)
+
+if len(sys.argv) < 2:
+    logging.error(" No folder provided")
+    sys.exit(1)
+
+folder_name = sys.argv[1]+'/'
+logging.info('Formatting '+ folder_name)
 dir = "./data/"+folder_name
 txt_file_name = next((f[:-4] for f in os.listdir(dir) if f.endswith(".txt")), None)
 
@@ -19,26 +33,26 @@ def write_json(file_name):
 
 
 def convert_to_json(dir):
-    # loops dir and converts if not done already
+    # loops dir and converts to json if not done already
     json_files = [f[:-5] for f in os.listdir(dir) if f.endswith(".json")]
     xml_files = [f[:-4] for f in os.listdir(dir) if f.endswith(".xml")]
     if not xml_files:
-        print("[WARN]: No .xml files found")
+        logging.warning(" No .xml files found")
         return
     for i in xml_files:
         if i not in json_files:
             try:
                 write_json(i)
-                print(f"[INFO]: Succesfully converted {i}")
+                logging.info(f" Succesfully converted {i}")
             except:
-                print(f"[ERROR]: Fail to convert {i}")
-    print("[INFO]: Done!")
+                logging.error(f" Fail to convert {i}")
+    logging.info(" Done!")
 
 
 convert_to_json(dir)
 
 # ============================================
-print("[INFO]: Reformating tendis file")
+logging.info(" Reformating tendis file")
 names = [
     "milliseconds",
     "RRL1A:IST:2",
@@ -61,30 +75,6 @@ names = [
     "[µA_3]",
     "s",
 ]
-df = pd.read_csv(
-    dir + txt_file_name + ".txt",
-    sep="\t",
-    header=None,
-    names=names,
-    encoding="unicode_escape",
-)
-df = df.drop(
-    [
-        "[degC_1]",
-        "[kV]",
-        "[µA_1]",
-        "[degC_2]",
-        "[degC_3]",
-        "[µA_2]",
-        "[µA_3]",
-        "s",
-        "[uA]",
-        "[mm]",
-    ],
-    axis=1,
-)
-df = df.iloc[1:]
-
 # creates the interlock column
 def generate_failure(df_col):
     f = [0] * len(df_col)
@@ -92,13 +82,6 @@ def generate_failure(df_col):
         if j == 0:
             f[i] = 1
     return f
-
-
-# f = generate_failure(df['MNC3:IST:2'])
-df["INT"] = generate_failure(df["MNC3:IST:2"])
-df["RRL1A:IST:2"] = df["RRL1A:IST:2"].astype(float)
-print("[INFO]: INT column created")
-
 
 def fill_scan_name_col(
     df: pd.DataFrame, list_files: list, rrl_column: str, max_val=4550
@@ -120,11 +103,45 @@ def fill_scan_name_col(
                 indicator = 0
     return df
 
+def transform_tendis(txt_file_name,dir,names):
+    if txt_file_name:
+        df = pd.read_csv(
+            dir + txt_file_name + ".txt",
+            sep="\t",
+            header=None,
+            names=names,
+            encoding="unicode_escape",
+        )
+        df = df.drop(
+            [
+                "[degC_1]",
+                "[kV]",
+                "[µA_1]",
+                "[degC_2]",
+                "[degC_3]",
+                "[µA_2]",
+                "[µA_3]",
+                "s",
+                "[uA]",
+                "[mm]",
+            ],
+            axis=1,
+        )
+        df = df.iloc[1:]
 
-list_files = sorted([f[:-5] for f in os.listdir(dir) if f.endswith(".json")])
+        # f = generate_failure(df['MNC3:IST:2'])
+        df["INT"] = generate_failure(df["MNC3:IST:2"])
+        df["RRL1A:IST:2"] = df["RRL1A:IST:2"].astype(float)
+        logging.info(" INT column created")
 
-df = fill_scan_name_col(df, list_files, "RRL1A:IST:2")
-print("[INFO]: scan column created")
+        list_files = sorted([f[:-5] for f in os.listdir(dir) if f.endswith(".json")])
 
-df.to_csv(dir + txt_file_name + ".csv", index=False)
-print("[INFO]: csv saved")
+        df = fill_scan_name_col(df, list_files, "RRL1A:IST:2")
+        logging.info(" Scan column created")
+
+        df.to_csv(dir + txt_file_name + ".csv", index=False)
+        logging.info(" csv saved")
+    else:
+        logging.error(" No txt file, nothing to reformat")
+
+transform_tendis(txt_file_name,dir,names)
