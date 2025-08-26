@@ -129,7 +129,7 @@ def transform_tendis(txt_file_name,dir,names):
         )
         df = df.iloc[1:]
 
-        # f = generate_failure(df['MNC3:IST:2'])
+        df["MNC3:IST:2"] = df["MNC3:IST:2"].astype(float)
         df["INT"] = generate_failure(df["MNC3:IST:2"])
         df["RRL1A:IST:2"] = df["RRL1A:IST:2"].astype(float)
         logging.info(" INT column created")
