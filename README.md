@@ -1,4 +1,4 @@
-# WebApp Main
+# RRL Viz Main
 
 ## 📁 Project Structure
 

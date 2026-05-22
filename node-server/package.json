@@ -1,5 +1,5 @@
 {
-  "name": "server",
+  "name": "rrl-scan-visualizer",
   "version": "1.0.0",
   "description": "",
   "main": "server.js",
