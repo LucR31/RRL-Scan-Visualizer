@@ -1,29 +1,6 @@
 # RRL Scan Visualizer
 
-## 📁 Project Structure
-
-```
-rrl-scan-visualizer/
-├── node-server/
-│   ├── server.js             # Node.js server
-│   ├── script.py             # Helper script
-│   ├── package.json             
-│   ├── package-lock.json
-│   ├── Dockerfile
-│   ├── .dockerignore       
-│   └── public/
-│       ├── index.html        # Main frontend page
-│       ├── main.js           # Frontend JS logic
-│       ├── functions.js      # Extra frontend JS
-│       └── style.css         # Styles
-├── .gitignore
-├── LICENSE
-└── README.md
-```
-
----
-
-## ⚙️ Getting Started
+## Getting Started
 
 ### 1. Adding Data
 
@@ -45,38 +22,11 @@ node-server/
 │   │   └── data_file.txt    
 ```
 
-### 2. Start Node.js Server
+### 2. Run the app
 
-#### 2.1 Option 1: Docker
-
+### With Docker Compose (recommended)
 ```bash
-cd node-server
-docker build -t web-app .
+docker compose up --build
 ```
 
-```bash
-docker run -p 3000:3000 web-app
-```
-#### 2.2 Option 2: manual
-
-<ol>
-<li>Install <b>Node.js</b> and <b>npm</b></li>
-
-<li> use npm to install other dependecies:
-
-```bash
-cd node-server
-npm install
-```
-</li>
-<li> run the web app:
-
-```bash
-node server.js
-```
-</li>
-
-</ol>
-
-
-
+Then open: http://localhost:3000
