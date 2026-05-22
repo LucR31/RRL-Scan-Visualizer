@@ -1,9 +1,9 @@
-# RRL Viz Main
+# RRL Scan Visualizer
 
 ## 📁 Project Structure
 
 ```
-webapp-main/
+rrl-scan-visualizer/
 ├── node-server/
 │   ├── server.js             # Node.js server
 │   ├── script.py             # Helper script
